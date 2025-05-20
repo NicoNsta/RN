@@ -41,8 +41,11 @@ void partitionIndex(QVector<int>& idx,
 {
     int i = l, j = r;
     while (i <= j) {
+        // suche von links den ersten, der > split ist
         while (i <= j && pts[idx[i]][axis] <= split) ++i;
+        // suche von rechts den ersten, der ≤ split ist
         while (i <= j && pts[idx[j]][axis] >  split) --j;
+        // tausche beide, falls sie sich überschneiden
         if (i < j) {
             std::swap(idx[i], idx[j]);
             ++i; --j;
@@ -62,18 +65,21 @@ KdNode* buildKdTree(const QVector<QVector4D>& pts,
     if (l > r) return nullptr;
     int axis = depth % 3;
     auto& idx = (axis == 0 ? idxX : axis == 1 ? idxY : idxZ);
-    int m    = (l + r) / 2;
-    float split = pts[idx[m]][axis];
+    int m    = (l + r) / 2;                                 // Median-Index im gewählten Array
+    float split = pts[idx[m]][axis];                        // Median
 
+     // 1) Erzeuge neuen Knoten mit diesem Median
     auto* node = new KdNode{ pts[idx[m]], split, axis };
 
-    // Partitioniere die drei Listen
+    // 2) Partitioniere alle drei Index-Arrays entlang dieser Achse --> Damit in jedem Array rechts/links konsistent aufgeteilt bleibt
     partitionIndex(idxX, pts, axis, split, l, r);
     partitionIndex(idxY, pts, axis, split, l, r);
     partitionIndex(idxZ, pts, axis, split, l, r);
 
+    // 3) Rekursiv linkes und rechtes Teil-Unterbäume bauen
     node->left  = buildKdTree(pts, idxX, idxY, idxZ, l,   m-1, depth+1);
     node->right = buildKdTree(pts, idxX, idxY, idxZ, m+1, r,   depth+1);
+
     return node;
 }
 

@@ -5,9 +5,9 @@
 
 // Knoten im 3d-kd-Tree
 struct KdNode {
-    QVector4D point;    // der Punkt im Knoten
-    float      splitValue; // Koordinate entlang axis
-    int        axis;    // 0=x, 1=y, 2=z
+    QVector4D point;                        // der „Median“-Punkt, an dem wir splitten
+    float      splitValue;                  // die Koordinate dieses Punktes auf der Split-Achse
+    int        axis;                        // 0 = X-Achse, 1 = Y-Achse, 2 = Z-Achse
     KdNode*    left  = nullptr;
     KdNode*    right = nullptr;
     ~KdNode() { delete left; delete right; }
