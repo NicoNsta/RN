@@ -33,3 +33,4 @@ void visualizeKdTree(KdNode*   node,
                      const QVector4D& bbMin,
                      const QVector4D& bbMax,
                      SceneManager&    scene);
+

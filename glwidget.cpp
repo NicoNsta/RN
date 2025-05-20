@@ -42,8 +42,6 @@
 using namespace std;
 using namespace Qt;
 
-int desiredLevels = 3;
-
 GLWidget::GLWidget(QWidget* parent) : QOpenGLWidget(parent), pointSize(5)
 {
     // enable mouse-events, even if no mouse-button is pressed -> yields smoother mouse-move reactions
@@ -280,18 +278,32 @@ void GLWidget::openFileDialog()
     QVector3D max3 = pc->getMax();
     QVector4D bbMin(min3, 1.0f), bbMax(max3, 1.0f);
 
-    // 2) KD-Tree aufbauen
+    // 2) KD‐Tree aufbauen
     QVector<int> idxX(N), idxY(N), idxZ(N);
     std::iota(idxX.begin(), idxX.end(), 0);
     std::iota(idxY.begin(), idxY.end(), 0);
     std::iota(idxZ.begin(), idxZ.end(), 0);
-    kdRoot = buildKdTree(pts, idxX, idxY, idxZ, /*l=*/0, /*r=*/N-1, /*depth=*/0);
+
+    // sortiere idxX so, dass pts[idxX[i]].x monoton steigt
+    std::sort(idxX.begin(), idxX.end(),
+              [&](int a, int b){ return pts[a].x() < pts[b].x(); });
+    // sortiere idxY so, dass pts[idxY[i]].y monoton steigt
+    std::sort(idxY.begin(), idxY.end(),
+              [&](int a, int b){ return pts[a].y() < pts[b].y(); });
+    // sortiere idxZ so, dass pts[idxZ[i]].z monoton steigt
+    std::sort(idxZ.begin(), idxZ.end(),
+              [&](int a, int b){ return pts[a].z() < pts[b].z(); });
+
+    // jetzt den Median‐Split starten
+    kdRoot = buildKdTree(pts, idxX, idxY, idxZ,
+                         /*l=*/0, /*r=*/N-1, /*depth=*/0);
+
 
     // 3) Oct-Tree aufbauen
     QVector<int> allIdx(N);
     std::iota(allIdx.begin(), allIdx.end(), 0);
 
-    octRoot = buildOctTree(pts, bbMin, bbMax, allIdx, /*depth=*/0, /*maxDepth=*/(desiredLevels-1));
+    octRoot = buildOctTree(pts, bbMin, bbMax, allIdx, /*depth=*/0, /*maxDepth=*/(3));
 
     // 4) Szene bereinigen und gewählten Baum zeichnen
     updateTreeVisualization();
@@ -336,11 +348,11 @@ void GLWidget::updateTreeVisualization()
     // 3) Zeichne entweder KD-Tree-Ebenen oder Oct-Tree-Würfel
     if (showKd)
     {
-        visualizeKdTree(kdRoot, /*depth=*/0, /*maxDepth=*/2, bbMin, bbMax);
+        visualizeKdTree(kdRoot, /*depth=*/0, /*maxDepth=*/3, bbMin, bbMax);
     }
     else
     {
-        visualizeOctTree(octRoot, /*depth=*/0, /*maxDepth=*/(desiredLevels-1), sceneManager);
+        visualizeOctTree(octRoot, /*depth=*/0, /*maxDepth=*/3, sceneManager);
     }
 
     // 4) Anzeige aktualisieren
