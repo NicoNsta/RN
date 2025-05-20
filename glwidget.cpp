@@ -303,14 +303,14 @@ void GLWidget::openFileDialog()
     QVector<int> allIdx(N);
     std::iota(allIdx.begin(), allIdx.end(), 0);
 
-    octRoot = buildOctTree(pts, bbMin, bbMax, allIdx, /*depth=*/0, /*maxDepth=*/(3));
+    octRoot = buildOctTree(pts, bbMin, bbMax, allIdx, /*depth=*/0, /*maxDepth=*/2);
 
-    // 4) Szene bereinigen und gewählten Baum zeichnen
-    updateTreeVisualization();
-
-    // 5) Die PointCloud selbst ans SceneManager hängen
+    // 4) Die PointCloud zuerst in die Szene hängen
     sceneManager.push_back(pc);
     lastFilePath = filePath;
+
+    // 5) Dann Szene bereinigen und _nur_ den gewählten Baum zeichnen
+    updateTreeVisualization();
 
     // 6) Neu zeichnen anstoßen
     update();
@@ -352,7 +352,7 @@ void GLWidget::updateTreeVisualization()
     }
     else
     {
-        visualizeOctTree(octRoot, /*depth=*/0, /*maxDepth=*/3, sceneManager);
+        visualizeOctTree(octRoot, /*depth=*/0, /*maxDepth=*/2, sceneManager);
     }
 
     // 4) Anzeige aktualisieren

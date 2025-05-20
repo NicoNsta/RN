@@ -387,6 +387,9 @@ GeneratedFiles/debug/moc_glwidget.cpp: ../../glwidget.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qvector.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QVector4D \
 		../../OctTree.h \
+		../../Cube.h \
+		../../Hexahedron.h \
+		../../Axes.h \
 		GeneratedFiles/debug/moc_predefs.h \
 		C:/Qt/6.9.0/mingw_64/bin/moc.exe
 	C:\Qt\6.9.0\mingw_64\bin\moc.exe $(DEFINES) --include "G:/Desktop/HTWG/3D/Aufgabe 3/Framework/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/GeneratedFiles/debug/moc_predefs.h" -IC:/Qt/6.9.0/mingw_64/mkspecs/win32-g++ -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework" -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework/GeneratedFiles" -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework" -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework/GeneratedFiles/Debug" -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework/external/eigen-3.4.0" -IC:/Qt/6.9.0/mingw_64/include -IC:/Qt/6.9.0/mingw_64/include/QtOpenGLWidgets -IC:/Qt/6.9.0/mingw_64/include/QtOpenGL -IC:/Qt/6.9.0/mingw_64/include/QtWidgets -IC:/Qt/6.9.0/mingw_64/include/QtGui -IC:/Qt/6.9.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++ -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed -IC:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include ..\..\glwidget.h -o GeneratedFiles\debug\moc_glwidget.cpp
@@ -644,6 +647,9 @@ GeneratedFiles/debug/moc_mainwindow.cpp: ../../mainwindow.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qvector.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QVector4D \
 		../../OctTree.h \
+		../../Cube.h \
+		../../Hexahedron.h \
+		../../Axes.h \
 		GeneratedFiles/debug/moc_predefs.h \
 		C:/Qt/6.9.0/mingw_64/bin/moc.exe
 	C:\Qt\6.9.0\mingw_64\bin\moc.exe $(DEFINES) --include "G:/Desktop/HTWG/3D/Aufgabe 3/Framework/build/Desktop_Qt_6_9_0_MinGW_64_bit-Debug/GeneratedFiles/debug/moc_predefs.h" -IC:/Qt/6.9.0/mingw_64/mkspecs/win32-g++ -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework" -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework/GeneratedFiles" -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework" -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework/GeneratedFiles/Debug" -I"G:/Desktop/HTWG/3D/Aufgabe 3/Framework/external/eigen-3.4.0" -IC:/Qt/6.9.0/mingw_64/include -IC:/Qt/6.9.0/mingw_64/include/QtOpenGLWidgets -IC:/Qt/6.9.0/mingw_64/include/QtOpenGL -IC:/Qt/6.9.0/mingw_64/include/QtWidgets -IC:/Qt/6.9.0/mingw_64/include/QtGui -IC:/Qt/6.9.0/mingw_64/include/QtCore -I. -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++ -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/x86_64-w64-mingw32 -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/backward -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include -IC:/Qt/Tools/mingw1310_64/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed -IC:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include ..\..\mainwindow.h -o GeneratedFiles\debug\moc_mainwindow.cpp
@@ -1022,7 +1028,10 @@ GeneratedFiles/ui_mainwindow.h: ../../mainwindow.ui \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/QVector \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qvector.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QVector4D \
-		../../OctTree.h
+		../../OctTree.h \
+		../../Cube.h \
+		../../Hexahedron.h \
+		../../Axes.h
 	C:\Qt\6.9.0\mingw_64\bin\uic.exe ..\..\mainwindow.ui -o GeneratedFiles\ui_mainwindow.h
 
 compiler_yacc_decl_make_all:
@@ -1260,6 +1269,9 @@ debug/glwidget.o: ../../glwidget.cpp ../../glwidget.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qvector.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QVector4D \
 		../../OctTree.h \
+		../../Cube.h \
+		../../Hexahedron.h \
+		../../Axes.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QtGui \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QtGuiDepends \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/QtCore \
@@ -1477,7 +1489,6 @@ debug/glwidget.o: ../../glwidget.cpp ../../glwidget.h \
 		C:/Qt/6.9.0/mingw_64/include/QtWidgets/QMessageBox \
 		C:/Qt/6.9.0/mingw_64/include/QtWidgets/qmessagebox.h \
 		C:/Qt/6.9.0/mingw_64/include/QtWidgets/qdialogbuttonbox.h \
-		../../Axes.h \
 		../../Plane.h \
 		../../PointCloud.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\glwidget.o ..\..\glwidget.cpp
@@ -1735,6 +1746,9 @@ debug/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qvector.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QVector4D \
 		../../OctTree.h \
+		../../Cube.h \
+		../../Hexahedron.h \
+		../../Axes.h \
 		C:/Qt/6.9.0/mingw_64/include/QtWidgets/QFileDialog \
 		C:/Qt/6.9.0/mingw_64/include/QtWidgets/qfiledialog.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qdir.h \
@@ -2001,7 +2015,10 @@ debug/main.o: ../../main.cpp ../../mainwindow.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/QVector \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qvector.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QVector4D \
-		../../OctTree.h
+		../../OctTree.h \
+		../../Cube.h \
+		../../Hexahedron.h \
+		../../Axes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o ..\..\main.cpp
 
 debug/PointCloud.o: ../../PointCloud.cpp ../../PointCloud.h \
@@ -3795,7 +3812,58 @@ debug/KdTree.o: ../../KdTree.cpp ../../KdTree.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qrect.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qmargins.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qsize.h \
-		C:/Qt/6.9.0/mingw_64/include/QtCore/qmath.h
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qmath.h \
+		../../SceneManager.h \
+		../../SceneObject.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/QColor \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/qcolor.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/qrgb.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/qrgba64.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/QMatrix4x4 \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/qmatrix4x4.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/qvector3d.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/qvector4d.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/qquaternion.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/qgenericmatrix.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qmetatype.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qdatastream.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qscopedpointer.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qiodevicebase.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qfloat16.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qtformat_impl.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qiterable.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qmetacontainer.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qcontainerinfo.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qtaggedpointer.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qobjectdefs.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qobjectdefs_impl.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qfunctionaltools_impl.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qscopeguard.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qdebug.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qtextstream.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qcontiguouscache.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qsharedpointer.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qshareddata.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qsharedpointer_impl.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qmap.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qshareddata_impl.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qset.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qhash.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qvarlengtharray.h \
+		../../RenderCamera.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/QObject \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qobject.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qcoreevent.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qbasictimer.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qabstracteventdispatcher.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qeventloop.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qdeadlinetimer.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qelapsedtimer.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qobject_impl.h \
+		C:/Qt/6.9.0/mingw_64/include/QtCore/qbindingstorage.h \
+		C:/Qt/6.9.0/mingw_64/include/QtGui/QVector3D \
+		../../Plane.h \
+		../../Axes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\KdTree.o ..\..\KdTree.cpp
 
 debug/OctTree.o: ../../OctTree.cpp ../../OctTree.h \
@@ -3898,8 +3966,7 @@ debug/OctTree.o: ../../OctTree.cpp ../../OctTree.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qmargins.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qsize.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qmath.h \
-		../../Cube.h \
-		../../Hexahedron.h \
+		../../SceneManager.h \
 		../../SceneObject.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QColor \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/qcolor.h \
@@ -3948,8 +4015,9 @@ debug/OctTree.o: ../../OctTree.cpp ../../OctTree.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qobject_impl.h \
 		C:/Qt/6.9.0/mingw_64/include/QtCore/qbindingstorage.h \
 		C:/Qt/6.9.0/mingw_64/include/QtGui/QVector3D \
-		../../Axes.h \
-		../../SceneManager.h
+		../../Cube.h \
+		../../Hexahedron.h \
+		../../Axes.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\OctTree.o ..\..\OctTree.cpp
 
 debug/Plane.o: ../../Plane.cpp ../../Plane.h \
