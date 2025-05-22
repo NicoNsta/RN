@@ -256,7 +256,7 @@ void GLWidget::setPointSize(int size)
 // baut beide Baumstrukturen und hängt die PointCloud ans SceneManager.
 void GLWidget::openFileDialog()
 {
-    // Datei auswählen
+    // ─────────── 1) Datei auswählen ───────────
     const QString filePath = QFileDialog::getOpenFileName(
         this,
         tr("Open PLY file"),
@@ -264,57 +264,67 @@ void GLWidget::openFileDialog()
         tr("PLY Files (*.ply)")
         );
     if (filePath.isEmpty())
-        return;
+        return;  // Abbruch, wenn der Nutzer nichts ausgewählt hat
 
-    // 0) Punktwolke anlegen und laden
+    // ──────── 2) Punktwolke anlegen & laden ────────
     PointCloud* pc = new PointCloud;
-    pc->loadPLY(filePath);
+    pc->loadPLY(filePath);                     // lädt + reskaliert die Punkte intern
     pc->setPointSize(static_cast<unsigned>(pointSize));
 
-    // 1) Punkte & Bounding-Box abrufen
-    const QVector<QVector4D>& pts = *pc;
-    int N = pc->size();
-    QVector3D min3 = pc->getMin();
-    QVector3D max3 = pc->getMax();
-    QVector4D bbMin(min3, 1.0f), bbMax(max3, 1.0f);
+    // ──── 3) Echte AABB aus den rescalten Punkten berechnen ────
+    //    (statt pc->getMin()/getMax(), die veraltet sind)
+    const QVector<QVector4D>& pts = *pc;       // homogene 4D-Punkte
+    int N = pts.size();
+    // Initialisierung mit dem ersten Punkt
+    QVector4D bbMin = pts[0], bbMax = pts[0];
+    // Min/Max über alle Punkte ermitteln
+    for (int i = 1; i < N; ++i) {
+        const auto& p = pts[i];
+        bbMin.setX(qMin(bbMin.x(), p.x()));
+        bbMin.setY(qMin(bbMin.y(), p.y()));
+        bbMin.setZ(qMin(bbMin.z(), p.z()));
+        bbMax.setX(qMax(bbMax.x(), p.x()));
+        bbMax.setY(qMax(bbMax.y(), p.y()));
+        bbMax.setZ(qMax(bbMax.z(), p.z()));
+    }
 
-    // 2) KD‐Tree aufbauen
+    // ─────────── 4) KD-Tree aufbauen ───────────
+    // a) Index-Arrays anlegen und füllen
     QVector<int> idxX(N), idxY(N), idxZ(N);
     std::iota(idxX.begin(), idxX.end(), 0);
     std::iota(idxY.begin(), idxY.end(), 0);
     std::iota(idxZ.begin(), idxZ.end(), 0);
-
-    // sortiere idxX so, dass pts[idxX[i]].x monoton steigt
+    // b) Vorsortieren nach der jeweiligen Koordinate
     std::sort(idxX.begin(), idxX.end(),
               [&](int a, int b){ return pts[a].x() < pts[b].x(); });
-    // sortiere idxY so, dass pts[idxY[i]].y monoton steigt
     std::sort(idxY.begin(), idxY.end(),
               [&](int a, int b){ return pts[a].y() < pts[b].y(); });
-    // sortiere idxZ so, dass pts[idxZ[i]].z monoton steigt
     std::sort(idxZ.begin(), idxZ.end(),
               [&](int a, int b){ return pts[a].z() < pts[b].z(); });
-
-    // jetzt den Median‐Split starten
+    // c) Rekursiver Aufbau – Ergebnis-Root in kdRoot
     kdRoot = buildKdTree(pts, idxX, idxY, idxZ,
-                         /*l=*/0, /*r=*/N-1, /*depth=*/0);
+                         /*l=*/0, /*r=*/N - 1, /*depth=*/0);
 
-
-    // 3) Oct-Tree aufbauen
+    // ─────────── 5) Oct-Tree aufbauen ───────────
     QVector<int> allIdx(N);
     std::iota(allIdx.begin(), allIdx.end(), 0);
+    octRoot = buildOctTree(pts,
+                           bbMin, bbMax,
+                           allIdx,
+                           /*depth=*/0,
+                           /*maxDepth=*/2);
 
-    octRoot = buildOctTree(pts, bbMin, bbMax, allIdx, /*depth=*/0, /*maxDepth=*/2);
-
-    // 4) Die PointCloud zuerst in die Szene hängen
+    // ──── 6) PointCloud in Szene hängen ────
     sceneManager.push_back(pc);
-    lastFilePath = filePath;
+    lastFilePath = filePath;  // merken, um beim Toggle nicht neu laden zu müssen
 
-    // 5) Dann Szene bereinigen und _nur_ den gewählten Baum zeichnen
+    // ──────── 7) Je nach Toggle genau einen Baum neu zeichnen ────────
     updateTreeVisualization();
 
-    // 6) Neu zeichnen anstoßen
+    // ──────── 8) Zeichen-Update anstoßen ────────
     update();
 }
+
 
 
 
@@ -348,7 +358,7 @@ void GLWidget::updateTreeVisualization()
     // 3) Zeichne entweder KD-Tree-Ebenen oder Oct-Tree-Würfel
     if (showKd)
     {
-        visualizeKdTree(kdRoot, /*depth=*/0, /*maxDepth=*/3, bbMin, bbMax);
+        visualizeKdTree(kdRoot, /*depth=*/0, /*maxDepth=*/1, bbMin, bbMax);
     }
     else
     {

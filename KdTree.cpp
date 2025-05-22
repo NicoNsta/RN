@@ -84,7 +84,7 @@ KdNode* buildKdTree(const QVector<QVector4D>& pts,
 }
 
 // ------------------------------------------------------------------
-// Visualisiert die ersten maxDepth-Ebenen des kd-Trees
+// Visualisiert die ersten maxDepth-Splitting-Ebenen des KD-Trees
 // ------------------------------------------------------------------
 void visualizeKdTree(KdNode*          node,
                      int              depth,
@@ -93,80 +93,66 @@ void visualizeKdTree(KdNode*          node,
                      const QVector4D& bbMax,
                      SceneManager&    scene)
 {
-    // 0) Abbruch: kein Knoten oder Tiefe überschritten
+    // 0) Abbruch, wenn kein Knoten oder Tiefe überschritten
     if (!node || depth > maxDepth)
         return;
 
-    // 1) Ursprung, Normalenvektor und Skalierungsfaktoren berechnen
-    QVector4D origin, normal;
-    float     sx, sy;
-    switch (node->axis) {
-    case 0:  // X-Split
-        origin = { node->splitValue,
-                  0.5f*(bbMin.y() + bbMax.y()),
-                  0.5f*(bbMin.z() + bbMax.z()),
-                  1.0f };
-        normal = {1,0,0,0};
-        sx     = 0.5f*(bbMax.y() - bbMin.y());
-        sy     = 0.5f*(bbMax.z() - bbMin.z());
-        break;
-    case 1:  // Y-Split
-        origin = { 0.5f*(bbMin.x() + bbMax.x()),
-                  node->splitValue,
-                  0.5f*(bbMin.z() + bbMax.z()),
-                  1.0f };
-        normal = {0,1,0,0};
-        sx     = 0.5f*(bbMax.x() - bbMin.x());
-        sy     = 0.5f*(bbMax.z() - bbMin.z());
-        break;
-    default: // Z-Split
-        origin = { 0.5f*(bbMin.x() + bbMax.x()),
-                  0.5f*(bbMin.y() + bbMax.y()),
-                  node->splitValue,
-                  1.0f };
-        normal = {0,0,1,0};
-        sx     = 0.5f*(bbMax.x() - bbMin.x());
-        sy     = 0.5f*(bbMax.y() - bbMin.y());
-        break;
+    // 1) Bestimme die volle Kantenlänge der lokalen AABB
+    //    (bbMin und bbMax wurden schon auf den Teilraum zugeschnitten)
+    float fullW, fullH;
+    if (node->axis == 0) {
+        // X-Split → Ebene in YZ → Breite = Y-Range, Höhe = Z-Range
+        fullW = bbMax.y() - bbMin.y();
+        fullH = bbMax.z() - bbMin.z();
+    }
+    else if (node->axis == 1) {
+        // Y-Split → Ebene in XZ → Breite = X-Range, Höhe = Z-Range
+        fullW = bbMax.x() - bbMin.x();
+        fullH = bbMax.z() - bbMin.z();
+    }
+    else {
+        // Z-Split → Ebene in XY → Breite = X-Range, Höhe = Y-Range
+        fullW = bbMax.x() - bbMin.x();
+        fullH = bbMax.y() - bbMin.y();
     }
 
-    // 2) Plane-Mesh anlegen und skalieren
-    QMatrix4x4 M;
-    M.scale(sx, sy, 1.0f);
+    // 2) Ursprung = der Median-Punkt im Knoten (node->point)
+    //    Normalen-Vektor ebenfalls pro Achse
+    QVector4D origin = node->point;
+    QVector4D normal = (node->axis == 0 ? QVector4D{1,0,0,0}
+                        : node->axis == 1 ? QVector4D{0,1,0,0}
+                                          : QVector4D{0,0,1,0});
 
-    // 3) Transparenz t in [0.2 … 0.8] je nach Tiefe
-    float t = (255 - (depth * 200 / maxDepth)) / 255.0f;
-    t = qMax(0.2f, t);
+    // 3) Farbe und Transparenz nach Tiefe
+    float t = qMax(0.2f, (255 - (depth * 200 / maxDepth)) / 255.0f);
+    QColor col = (node->axis==0 ? QColor(255,0,0)
+                  : node->axis==1 ? QColor(0,255,0)
+                                    : QColor(0,0,255));
 
-    // 4) Farbe je Achse: Rot=X, Grün=Y, Blau=Z
-    QColor col;
-    switch (node->axis) {
-    case 0:
-        col = QColor(255,   0,   0);  // X-Split → Rot
-        break;
-    case 1:
-        col = QColor(  0, 255,   0);  // Y-Split → Grün
-        break;
-    case 2:
-        col = QColor(  0,   0, 255);  // Z-Split → Blau
-        break;
-    }
-
-    // 5) Ebene erzeugen, transformieren und zur Szene hinzufügen
+    // 4) Plane direkt am Median-Punkt erzeugen
+    //    Intern: Quad von [-1,-1] bis [+1,+1]
     KdPlane* plane = new KdPlane(origin, normal, col, t);
+
+    // 5) Skalieren:  [-1,+1] → [−fullW/2,+fullW/2] in Breite
+    //               [−1,+1] → [−fullH/2,+fullH/2] in Höhe
+    QMatrix4x4 M;
+    M.scale(fullW * 0.5f, fullH * 0.5f, 1.0f);
     plane->affineMap(M);
+
+    // 6) Ebene in die Szene einhängen
     scene.push_back(plane);
 
-    // 6) Bounding-Box für linkes/rechtes Teilbaum splitten
+    // 7) Lokale AABB in zwei Teilräume splitten
     QVector4D leftMin  = bbMin, leftMax  = bbMax;
     QVector4D rightMin = bbMin, rightMax = bbMax;
-    if      (node->axis == 0) { leftMax.setX(node->splitValue);   rightMin.setX(node->splitValue); }
-    else if (node->axis == 1) { leftMax.setY(node->splitValue);   rightMin.setY(node->splitValue); }
-    else                      { leftMax.setZ(node->splitValue);   rightMin.setZ(node->splitValue); }
+    if      (node->axis == 0) { leftMax .setX(node->splitValue); rightMin.setX(node->splitValue); }
+    else if (node->axis == 1) { leftMax .setY(node->splitValue); rightMin.setY(node->splitValue); }
+    else                      { leftMax .setZ(node->splitValue); rightMin.setZ(node->splitValue); }
 
-    // 7) Rekursion für linkes und rechtes Teilbaum
+    // 8) Rekursion für linke und rechte Teilbäume
     visualizeKdTree(node->left,  depth+1, maxDepth, leftMin,  leftMax,  scene);
     visualizeKdTree(node->right, depth+1, maxDepth, rightMin, rightMax, scene);
 }
+
 
 
